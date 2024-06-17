@@ -1,8 +1,14 @@
-{"Nombre": "d", "Puntaje": 4}
-{"Nombre": "s", "Puntaje": 0}
-{"Nombre": "s", "Puntaje": 0}
-{"Nombre": "dwd", "Puntaje": 5}
-{"Nombre": "e", "Puntaje": 0}
-{"Nombre": "d", "Puntaje": 4}
-{"Nombre": "pepe", "Puntaje": 0}
-{"Nombre": "pepe", "Puntaje": 0}
+{
+    "__class__": "Manejador",
+    "jugadores": [
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "epe",
+                "puntaje": 0,
+                "fecha": "2024-06-17T00:14:55.218661",
+                "nivel": ""
+            }
+        }
+    ]
+}

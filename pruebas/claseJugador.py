@@ -10,7 +10,7 @@ class Jugador:
     def __init__(self,nombre,puntaje,fecha,nivel):
         self.__nombre = nombre
         self.__puntaje = puntaje
-        self.__fecha = fecha
+        self.__fecha = fecha.isoformat() #convertir fecha a cadena
         self.__nivel = nivel
 
     def getNombre(self):
@@ -27,7 +27,22 @@ class Jugador:
     
     def setNivel(self,nuevoNivel):
         self.__nivel = nuevoNivel
+
+    def __str__(self):
+        return f'{self.__nombre}  {self.__puntaje}   {self.__fecha}   {self.__nivel}'
         
     def __gt__(self, otro):
         return self.__puntaje > otro.getPuntaje()
+    
+    def toJSON(self):
+        d = dict(
+            __class__ = self.__class__.__name__,
+            __atributos__ = dict(
+                nombre = self.__nombre,
+                puntaje = self.__puntaje,
+                fecha = self.__fecha,
+                nivel = self.__nivel,
+                )
+            )
+        return d
     

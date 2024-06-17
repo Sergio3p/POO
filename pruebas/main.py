@@ -1,21 +1,29 @@
-from tkinter import *
-from tkinter import ttk,font
 import tkinter as tk
-from tkinter import simpledialog, messagebox              # Sirve para mandar el mensaje de "perdiste" al usuario.
+from tkinter import *
+from tkinter import ttk,font,simpledialog, messagebox              # Sirve para mandar el mensaje de "perdiste" al usuario.
 import random                                             # Porque son aleatorios los botones que se apretarán.
 import time                                               # Para las pausas entre cada ronda.
 import winsound                                           # Para ejecutar sonidos al apretar los botones.
 import json
 from functools import partial
+from datetime import datetime
+
+from claseJugador import Jugador
+from claseObjectEncoder import ObjectEncoder
+from manejadorJSON import Manejador
 
 class SimonDice:
     __ventana: object
     __secuencia: list
     __marcador: int
+    __fecha: datetime
     __puntajeRecord: int
     __contador: int
     __juegoInicial: bool
     __colores: list
+    __jugador: Jugador
+    __manejador: Manejador
+    __encoder: ObjectEncoder
 
     def __init__(self):
         self.__ventana = tk.Tk()            # Se crea una ventana y se le asigna un nuevo constructor de Tk para crear el nuevo frame.
@@ -28,12 +36,18 @@ class SimonDice:
         self.__ventana.title("Simón Dice")
         self.__ventana.geometry("400x400")
         self.__nombreUsuario = simpledialog.askstring("Nombre", "Ingrese su nombre:")
+        self.__fecha = datetime.now()
+        self.__encoder = ObjectEncoder()
+        self.__manejador = Manejador()
         self.barraOpciones()
         self.iniciarBotones()               # Se llama a un método que se encargará de INICIAR la INTERFAZ GRÁFICA.
         self.__ventana.configure(background="#f0f0f0")
         self.__ventana.mainloop()           # Indica que va a iniciar el CICLO PRINCIPAL del juego.
         
     # INTERFAZ GRÁFICA DEL JUEGO
+    #def setNombre(self,unNombre):
+
+
     def iniciarBotones(self):
         self.__botonVerde = Button(self.__ventana, command=partial(self.presionar, "Verde"), background="#008080", highlightthickness=20, relief="raised")
         self.__botonVerde.place(relx=0.29, rely=0.25, relheight=0.45, relwidth=0.4, anchor=tk.CENTER) # Permite colocar el botón.
@@ -60,7 +74,7 @@ class SimonDice:
         
         # Crear el menú "Archivo"
         archivo_menu = Menu(barra_menu, tearoff=0)
-        archivo_menu.add_command(label="ver puntajes", command=self.reiniciarJuego)
+        archivo_menu.add_command(label="ver puntajes", command=self.mostrarPuntajes)
         archivo_menu.add_separator()
         archivo_menu.add_command(label="Salir", command=self.__ventana.quit)
         barra_menu.add_cascade(label="Puntajes", menu=archivo_menu)
@@ -106,23 +120,13 @@ class SimonDice:
         label.pack(pady=10)
     
     #JEISON
-        self.guardarPuntaje()
         boton_reiniciar = ttk.Button(self.__ventanaPerdiste, text="REINICIAR JUEGO", command=self.reiniciarJuego)
         boton_reiniciar.pack(side=tk.LEFT, padx=20, pady=20)
         boton_salir = ttk.Button(self.__ventanaPerdiste, text='SALIR', command=quit)
         boton_salir.pack(side=tk.RIGHT, padx=20, pady=20)
+        self.cargarPuntajes()
         
-        
-        
-        
-        """
-        self.__ventanaPerdiste = Tk()
-        self.__ventanaPerdiste.title("Perdiste mogo")
-        self.__ventanaPerdiste.geometry('290x115')
-        ttk.Button(self.__ventanaPerdiste, text="REINICIAR JUEGO", command=self.reiniciarJuego).grid(column=2, row=3, sticky=W)
-        ttk.Button(self.__ventanaPerdiste, text='SALIR', command=quit).grid(column=3, row=3, sticky=W)
-        """
-        
+                
         #self.__botonReiniciar = Button(self.__ventana, command=self.reiniciarJuego, bg="white", text="REINICIAR JUEGO")
         #self.__botonReiniciar.place(relx=0.505, rely=0.45, relheight=0.1, relwidth=0.25, anchor=tk.N)
 
@@ -132,6 +136,7 @@ class SimonDice:
         self.__juegoInicial = False # Para que el usuario no siga jugando y deba presionar el botón de INICIAR para volver a jugar.
         self.__ventanaPerdiste.destroy()
         self.__nombreUsuario = simpledialog.askstring("Nombre", "Ingrese su nombre:")
+        self.__fecha = datetime.now()
         self.__botonIniciar.after(1600, self.iniciar)
         
         
@@ -197,18 +202,35 @@ class SimonDice:
 
     def sonido(self, frecuencia, duracion):
         winsound.Beep(frecuencia, duracion)   # La frecuencia determina la tonalidad del sonido (si es alto o bajo), la duración, cuántos segundos durará.
+    
+    def cargarPuntajes(self):
+        nombre = self.__nombreUsuario
+        puntaje = self.__marcador
+        fecha = self.__fecha
 
-#JEISON
-    def guardarPuntaje(self):                       # pedilo
-        data = {
-            "Nombre": self.__nombreUsuario,
-            "Puntaje": self.__marcador
-            #"Puntaje más alto": self.__mayorPuntaje # Clase usuario, atributos
-            
-        }
-        with open("pysimonpuntajes.json", "a") as f:
-            json.dump(data, f)
-            f.write("\n")
+        datos = Jugador(nombre,puntaje,fecha,nivel="")
+        self.__manejador.agregarJugador(datos)
+        d = self.__manejador.toJSON()
+        self.__encoder.guardarJSONArchivo(d,'pysimonpuntajes.json')
+
+    def mostrarPuntajes(self):
+        ventana_puntajes = Toplevel(self.__ventana)
+        ventana_puntajes.title("Galería de puntajes")
+        ventana_puntajes.geometry('400x300')
+
+        # Etiqueta de título
+        label_titulo = Label(ventana_puntajes, text="Puntajes de Jugadores", font=("Arial", 16))
+        label_titulo.pack(pady=10)
+
+        # Mostrar puntajes de cada jugador
+        for jugador in self.__manejador.mostrarDatos():  # Suponiendo que tengas un método en Manejador para obtener la lista de jugadores
+            label_jugador = Label(ventana_puntajes, text=f"{jugador.getNombre()} - Puntaje: {jugador.getPuntaje()}")
+            label_jugador.pack()
+
+        # Botón para cerrar la ventana
+        boton_cerrar = Button(ventana_puntajes, text="Cerrar", command=ventana_puntajes.destroy)
+        boton_cerrar.pack(pady=20)
+
 
 if __name__ == '__main__':
     test = SimonDice()
