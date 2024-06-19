@@ -1,0 +1,75 @@
+{
+    "__class__": "Manejador",
+    "jugadores": [
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "martin palermo",
+                "puntaje": 3,
+                "fecha": "2024-06-19",
+                "hora": "19:32:04",
+                "nivel": ""
+            }
+        },
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "martin palermo",
+                "puntaje": 3,
+                "fecha": "2024-06-19",
+                "hora": "19:32:04",
+                "nivel": ""
+            }
+        },
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "el burrito ortega",
+                "puntaje": 1,
+                "fecha": "2024-06-19",
+                "hora": "19:32:04",
+                "nivel": ""
+            }
+        },
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "pepe sand",
+                "puntaje": 4,
+                "fecha": "2024-06-19",
+                "hora": "19:32:04",
+                "nivel": ""
+            }
+        },
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "higuain",
+                "puntaje": 3,
+                "fecha": "2024-06-19",
+                "hora": "19:32:04",
+                "nivel": ""
+            }
+        },
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "el ogro fabianni",
+                "puntaje": 3,
+                "fecha": "2024-06-19",
+                "hora": "19:32:04",
+                "nivel": ""
+            }
+        },
+        {
+            "__class__": "Jugador",
+            "__atributos__": {
+                "nombre": "mesi",
+                "puntaje": 4,
+                "fecha": "2024-06-19",
+                "hora": "19:32:31",
+                "nivel": ""
+            }
+        }
+    ]
+}
