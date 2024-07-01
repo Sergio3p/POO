@@ -57,8 +57,6 @@ class Lista:
         self.__tope += 1
         
     def cargar_archivo_csv(self):
-        band1 = False
-        band2 = False
         with open('equipos.csv','r',newline='',encoding='UTF-8') as archivo:
             reader = csv.reader(archivo, delimiter = ";")
             next(reader)
