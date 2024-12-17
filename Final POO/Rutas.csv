@@ -1,0 +1,12 @@
+código_de_ruta;destino;distancia_total_km;ruta_asignada
+100;Cordoba;700;FALSO
+101;Rosario;300,5;FALSO
+102;Mendoza;1000,2;FALSO
+103;La Plata;60;FALSO
+104;Salta;1400,5;FALSO
+105;Tucuman;1300,3;FALSO
+106;Neuquen;1200;FALSO
+107;"Posadas""";1200,5;FALSO
+108;Bahía Blanca;600,7;FALSO
+109;Santa Fe;480,3;FALSO
+110;Formosa;1200;FALSO
